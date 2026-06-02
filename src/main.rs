@@ -1,4 +1,6 @@
-use pcap::Device;
+use etherparse::SlicedPacket;
+use pcap::{Device, Packet};
+
 use std::io;
 
 fn main() {
@@ -13,7 +15,8 @@ fn main() {
         .unwrap();
 
     while let Ok(packet) = cap.next_packet() {
-        println!("received packet! {:?}", packet);
+        println!("Packet received: {:?}", packet.header);
+        parse_packet(packet);
     }
 }
 
@@ -35,4 +38,16 @@ fn configuration(devices: Vec<Device>) -> Device {
         .expect("Please enter a valid number");
 
     devices.into_iter().nth(index).expect("Index out of range")
+}
+
+fn parse_packet(packet: Packet) {
+    match SlicedPacket::from_ethernet(&packet) {
+        Err(value) => println!("Err {:?}", value),
+        Ok(value) => {
+            println!("link: {:?}", value.link);
+            println!("link_exts: {:?}", value.link_exts);
+            println!("net: {:?}", value.net);
+            println!("transport: {:?}", value.transport);
+        }
+    };
 }
