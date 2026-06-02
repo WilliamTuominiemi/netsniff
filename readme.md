@@ -1,6 +1,7 @@
-# WIFI-Sniffer
+# netsniff
 
-## Prerequisite
+Network packet sniffer, inspect your computers traffic on a low level
 
-Npcap Runtime & SDK in C:\
-https://npcap.com/#download
+## Prerequisites
+
+- Npcap Runtime & SDK in C:\ which are available at https://npcap.com/#download
