@@ -1,5 +1,5 @@
 use chrono::{DateTime, Local, Utc};
-use etherparse::SlicedPacket;
+use etherparse::{Ipv4HeaderSlice, Ipv4Slice, NetSlice, SlicedPacket};
 use pcap::{Device, Packet, PacketHeader};
 
 use std::io;
@@ -17,7 +17,7 @@ fn main() {
 
     while let Ok(packet) = cap.next_packet() {
         parse_time(packet.header);
-        // parse_packet(packet);
+        parse_packet(packet);
     }
 }
 
@@ -56,11 +56,31 @@ fn parse_time(header: &PacketHeader) {
 fn parse_packet(packet: Packet) {
     match SlicedPacket::from_ethernet(&packet) {
         Err(value) => println!("Err {:?}", value),
-        Ok(value) => {
-            println!("link: {:?}", value.link);
-            println!("link_exts: {:?}", value.link_exts);
-            println!("net: {:?}", value.net);
-            println!("transport: {:?}", value.transport);
+        Ok(sliced_packet) => {
+            parse_net(sliced_packet.net);
         }
     };
+}
+
+fn parse_net(net: Option<NetSlice>) {
+    match net {
+        Some(net_slice) => match net_slice {
+            NetSlice::Ipv4(slice) => parse_ipv4_slice(slice),
+            NetSlice::Ipv6(_) => eprintln!("!!! Ipv6 parsing not implemented yet !!!"),
+            NetSlice::Arp(_) => eprintln!("!!! Arp parsing not implemented yet !!!"),
+        },
+        _ => panic!(),
+    }
+}
+
+fn parse_ipv4_slice(slice: Ipv4Slice) {
+    parse_ipv4_header(slice.header());
+}
+
+fn parse_ipv4_header(header: Ipv4HeaderSlice) {
+    println!(
+        "  {:?} -> {:?} ",
+        header.source_addr(),
+        header.destination_addr()
+    );
 }
