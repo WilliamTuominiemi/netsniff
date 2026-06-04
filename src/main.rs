@@ -1,5 +1,5 @@
 use chrono::{DateTime, Local, Utc};
-use etherparse::{Ipv4HeaderSlice, Ipv4Slice, NetSlice, SlicedPacket};
+use etherparse::{ArpPacketSlice, Ipv4HeaderSlice, Ipv4Slice, NetSlice, SlicedPacket};
 use pcap::{Device, Packet, PacketHeader};
 
 use std::io;
@@ -67,7 +67,7 @@ fn parse_net(net: Option<NetSlice>) {
         Some(net_slice) => match net_slice {
             NetSlice::Ipv4(slice) => parse_ipv4_slice(slice),
             NetSlice::Ipv6(_) => eprintln!("!!! Ipv6 parsing not implemented yet !!!"),
-            NetSlice::Arp(_) => eprintln!("!!! Arp parsing not implemented yet !!!"),
+            NetSlice::Arp(slice) => parse_arp_slice(slice),
         },
         _ => panic!(),
     }
@@ -77,9 +77,17 @@ fn parse_ipv4_slice(slice: Ipv4Slice) {
     parse_ipv4_header(slice.header());
 }
 
+fn parse_arp_slice(slice: ArpPacketSlice) {
+    println!(
+        "  Arp: {:?} -> {:?} ",
+        slice.sender_protocol_addr(),
+        slice.target_protocol_addr()
+    );
+}
+
 fn parse_ipv4_header(header: Ipv4HeaderSlice) {
     println!(
-        "  {:?} -> {:?} ",
+        "  Ipv4 {:?} -> {:?} ",
         header.source_addr(),
         header.destination_addr()
     );
