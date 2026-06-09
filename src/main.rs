@@ -1,6 +1,7 @@
 use chrono::{DateTime, Local, Utc};
 use etherparse::{
-    ArpPacketSlice, Ipv4HeaderSlice, Ipv4Slice, Ipv6HeaderSlice, Ipv6Slice, NetSlice, SlicedPacket,
+    ArpPacketSlice, Ipv4HeaderSlice, Ipv4Slice, Ipv6HeaderSlice, Ipv6Slice, LinkSlice, NetSlice,
+    SlicedPacket,
 };
 use pcap::{Device, Packet, PacketHeader};
 
@@ -60,8 +61,21 @@ fn parse_packet(packet: Packet) {
         Err(value) => println!("Err {:?}", value),
         Ok(sliced_packet) => {
             parse_net(sliced_packet.net);
+            // parse_link(sliced_packet.link);
         }
     };
+}
+
+fn parse_link(link: Option<LinkSlice>) {
+    match link {
+        Some(link_slice) => match link_slice {
+            LinkSlice::Ethernet2(slice) => println!("{:?}", slice),
+            LinkSlice::LinuxSll(slice) => println!("{:?}", slice),
+            LinkSlice::EtherPayload(slice) => println!("{:?}", slice),
+            LinkSlice::LinuxSllPayload(slice) => println!("{:?}", slice),
+        },
+        _ => panic!(),
+    }
 }
 
 fn parse_net(net: Option<NetSlice>) {
