@@ -1,9 +1,10 @@
 use chrono::{DateTime, Local, Utc};
-use etherparse::{LinkSlice, SlicedPacket};
+use etherparse::SlicedPacket;
 use pcap::{Device, Packet, PacketHeader};
 
 use std::io;
 
+mod link_parser;
 mod net_parser;
 
 fn main() {
@@ -62,20 +63,12 @@ fn parse_packet(packet: Packet) {
             let net = net_parser::NetParser {
                 net: sliced_packet.net,
             };
+            let link = link_parser::LinkParser {
+                link: sliced_packet.link,
+            };
+
             net.parse();
-            // parse_link(sliced_packet.link);
+            link.parse();
         }
     };
-}
-
-fn parse_link(link: Option<LinkSlice>) {
-    match link {
-        Some(link_slice) => match link_slice {
-            LinkSlice::Ethernet2(slice) => println!("{:?}", slice),
-            LinkSlice::LinuxSll(slice) => println!("{:?}", slice),
-            LinkSlice::EtherPayload(slice) => println!("{:?}", slice),
-            LinkSlice::LinuxSllPayload(slice) => println!("{:?}", slice),
-        },
-        _ => panic!(),
-    }
 }
