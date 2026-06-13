@@ -1,6 +1,4 @@
-use std::result;
-
-use etherparse::{Ethernet2Slice, LinkSlice, SlicedPacket};
+use etherparse::{Ethernet2Slice, LinkSlice};
 
 pub struct LinkParser<'a> {
     pub link: Option<LinkSlice<'a>>,
@@ -11,9 +9,9 @@ impl<'a> LinkParser<'a> {
         match &self.link {
             Some(link_slice) => match link_slice {
                 LinkSlice::Ethernet2(slice) => self.parse_ethernet_2_slice(slice),
-                LinkSlice::LinuxSll(slice) => println!("LinuxSll"),
-                LinkSlice::EtherPayload(slice) => println!("EtherPayload"),
-                LinkSlice::LinuxSllPayload(slice) => println!("LinuxSllPayload"),
+                LinkSlice::LinuxSll(_) => println!("LinuxSll"),
+                LinkSlice::EtherPayload(_) => println!("EtherPayload"),
+                LinkSlice::LinuxSllPayload(_) => println!("LinuxSllPayload"),
             },
             _ => panic!(),
         }
