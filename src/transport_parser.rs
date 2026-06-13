@@ -27,9 +27,30 @@ impl<'a> TransportParser<'a> {
 
     fn parse_tcp_slice(&self, slice: &TcpSlice) {
         println!(
-            "  TCP PORT: {} -> {}",
+            "  TCP PORT: {} -> {} | Flags: {:?}",
             slice.source_port(),
-            slice.destination_port()
+            slice.destination_port(),
+            self.get_tcp_flag(slice)
         );
+    }
+
+    fn get_tcp_flag(&self, slice: &TcpSlice) -> Vec<&str> {
+        let mut result: Vec<&str> = vec![];
+
+        if slice.syn() {
+            result.push("SYN");
+        } else if slice.ack() {
+            result.push("ACK");
+        } else if slice.fin() {
+            result.push("FIN");
+        } else if slice.rst() {
+            result.push("RST");
+        } else if slice.psh() {
+            result.push("PSH");
+        } else if slice.urg() {
+            result.push("URG");
+        }
+
+        result
     }
 }
