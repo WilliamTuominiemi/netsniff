@@ -57,6 +57,10 @@ fn parse_time(header: &PacketHeader) {
     }
 }
 
+fn display_packet_length(length: usize) {
+    println!("  Payload Length: {} bytes ", length);
+}
+
 fn parse_packet(packet: Packet) {
     match SlicedPacket::from_ethernet(&packet) {
         Err(value) => println!("Err {:?}", value),
@@ -74,6 +78,8 @@ fn parse_packet(packet: Packet) {
             link.parse();
             net.parse();
             transport.parse();
+
+            display_packet_length(packet.len());
         }
     };
 }
