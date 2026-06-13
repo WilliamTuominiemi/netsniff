@@ -61,19 +61,19 @@ fn parse_packet(packet: Packet) {
     match SlicedPacket::from_ethernet(&packet) {
         Err(value) => println!("Err {:?}", value),
         Ok(sliced_packet) => {
+            let link = link_parser::LinkParser {
+                link: sliced_packet.link,
+            };
             let net = net_parser::NetParser {
                 net: sliced_packet.net,
             };
             let transport = transport_parser::TransportParser {
                 transport: sliced_packet.transport,
             };
-            let link = link_parser::LinkParser {
-                link: sliced_packet.link,
-            };
 
+            link.parse();
             net.parse();
             transport.parse();
-            link.parse();
         }
     };
 }
