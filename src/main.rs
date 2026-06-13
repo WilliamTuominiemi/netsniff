@@ -58,7 +58,7 @@ fn parse_time(header: &PacketHeader) {
 }
 
 fn display_packet_length(length: usize) {
-    println!("  Payload Length: {} bytes ", length);
+    println!("  [Data] Payload Length: {} bytes ", length);
 }
 
 fn parse_packet(packet: Packet) {

@@ -28,7 +28,7 @@ impl<'a> NetParser<'a> {
 
     fn parse_arp_slice(&self, slice: &ArpPacketSlice<'a>) {
         println!(
-            "  Arp: {:?} -> {:?} ",
+            "  [L3] Arp: {:?} -> {:?} ",
             slice.sender_protocol_addr(),
             slice.target_protocol_addr()
         );
@@ -36,7 +36,7 @@ impl<'a> NetParser<'a> {
 
     fn parse_ipv4_header(&self, header: Ipv4HeaderSlice<'a>) {
         println!(
-            "  Ipv4 {:?} -> {:?} ",
+            "  [L3] Ipv4 {:?} -> {:?} ",
             header.source_addr(),
             header.destination_addr()
         );
@@ -44,7 +44,7 @@ impl<'a> NetParser<'a> {
 
     fn parse_ipv6_header(&self, header: Ipv6HeaderSlice<'a>) {
         println!(
-            "  Ipv6 {:?} -> {:?} ",
+            "  [L3] Ipv6 {:?} -> {:?} ",
             header.source_addr(),
             header.destination_addr()
         );

@@ -19,7 +19,7 @@ impl<'a> LinkParser<'a> {
 
     fn parse_ethernet_2_slice(&self, slice: &Ethernet2Slice) {
         println!(
-            "  Ethernet2 MAC {} -> {} ",
+            "  [L2] Ethernet2 MAC {} -> {} ",
             self.mac_as_array_to_string(&slice.source()),
             self.mac_as_array_to_string(&slice.destination())
         );

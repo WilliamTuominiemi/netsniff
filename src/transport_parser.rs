@@ -19,7 +19,7 @@ impl<'a> TransportParser<'a> {
 
     fn parse_udp_slice(&self, slice: &UdpSlice) {
         println!(
-            "  UDP PORT: {} -> {}",
+            "  [L4] UDP PORT: {} -> {}",
             slice.source_port(),
             slice.destination_port()
         );
@@ -27,7 +27,7 @@ impl<'a> TransportParser<'a> {
 
     fn parse_tcp_slice(&self, slice: &TcpSlice) {
         println!(
-            "  TCP PORT: {} -> {} | Flags: {:?}",
+            "  [L4] TCP PORT: {} -> {} | Flags: {:?}",
             slice.source_port(),
             slice.destination_port(),
             self.get_tcp_flag(slice)
