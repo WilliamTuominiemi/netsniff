@@ -6,6 +6,7 @@ use std::io;
 
 mod link_parser;
 mod net_parser;
+mod transport_parser;
 
 fn main() {
     let devices = Device::list().unwrap();
@@ -63,11 +64,15 @@ fn parse_packet(packet: Packet) {
             let net = net_parser::NetParser {
                 net: sliced_packet.net,
             };
+            let transport = transport_parser::TransportParser {
+                transport: sliced_packet.transport,
+            };
             let link = link_parser::LinkParser {
                 link: sliced_packet.link,
             };
 
             net.parse();
+            transport.parse();
             link.parse();
         }
     };
