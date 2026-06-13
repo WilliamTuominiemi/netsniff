@@ -36,17 +36,19 @@ impl<'a> NetParser<'a> {
 
     fn parse_ipv4_header(&self, header: Ipv4HeaderSlice<'a>) {
         println!(
-            "  [L3] Ipv4 {:?} -> {:?} ",
+            "  [L3] Ipv4 {:?} -> {:?} (TIL: {})",
             header.source_addr(),
-            header.destination_addr()
+            header.destination_addr(),
+            header.ttl()
         );
     }
 
     fn parse_ipv6_header(&self, header: Ipv6HeaderSlice<'a>) {
         println!(
-            "  [L3] Ipv6 {:?} -> {:?} ",
+            "  [L3] Ipv6 {:?} -> {:?} (Hop limit: {})",
             header.source_addr(),
-            header.destination_addr()
+            header.destination_addr(),
+            header.hop_limit()
         );
     }
 }
