@@ -1,6 +1,6 @@
 # netsniff
 
-Network packet sniffer, inspect your computers traffic on a low level
+Network sniffer, inspect your computers traffic on a low level
 
 ## Prerequisites
 
