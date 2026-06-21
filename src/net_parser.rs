@@ -36,7 +36,7 @@ impl<'a> NetParser<'a> {
 
     fn parse_ipv4_header(&self, header: Ipv4HeaderSlice<'a>) {
         println!(
-            "  [L3] Ipv4 {:?} -> {:?} (TIL: {})",
+            "  [L3] Ipv4 {:?} -> {:?} (TTL: {})",
             header.source_addr(),
             header.destination_addr(),
             header.ttl()
