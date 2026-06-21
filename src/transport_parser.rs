@@ -34,21 +34,23 @@ impl<'a> TransportParser<'a> {
         );
     }
 
-    fn get_tcp_flag(&self, slice: &TcpSlice) -> Vec<&str> {
-        let mut result: Vec<&str> = vec![];
+    fn get_tcp_flag(&self, slice: &TcpSlice) -> Vec<String> {
+        let mut result: Vec<String> = vec![];
 
         if slice.syn() {
-            result.push("SYN");
+            let sequence_flag = format!("SYN @ {}", slice.sequence_number());
+            result.push(sequence_flag);
         } else if slice.ack() {
-            result.push("ACK");
+            let acknowledgment_flag = format!("ACK @ {}", slice.acknowledgment_number());
+            result.push(acknowledgment_flag);
         } else if slice.fin() {
-            result.push("FIN");
+            result.push("FIN".to_owned());
         } else if slice.rst() {
-            result.push("RST");
+            result.push("RST".to_owned());
         } else if slice.psh() {
-            result.push("PSH");
+            result.push("PSH".to_owned());
         } else if slice.urg() {
-            result.push("URG");
+            result.push("URG".to_owned());
         }
 
         result
